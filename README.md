@@ -19,10 +19,7 @@ The goal of this project is to demonstrate how fundamental cybersecurity princip
 - [Installation and Setup](#installation-and-setup)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
-- [Screenshots](#screenshots)
-- [Future Enhancements](#future-enhancements)
 - [References](#references)
-- [Author](#author)
 
 ---
 
