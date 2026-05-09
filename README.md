@@ -1,10 +1,5 @@
 # Secure Login System — Web Application
 
-> **Final Year Project | Department of Computer Science and Engineering**
-> Academic Year: 2025 – 2026
-
----
-
 ## Abstract
 
 This project presents the design and implementation of a **Secure Login Web Application** that addresses common vulnerabilities in modern authentication systems. The system incorporates industry-standard cryptographic password hashing, robust input validation, SQL injection prevention, and stateful session management. An optional Two-Factor Authentication (2FA) layer provides an additional barrier against unauthorized access.
@@ -203,7 +198,7 @@ totp.verify(user_input_code)  # True / False
 
 ### Step 1 — Clone the Repository
 ```bash
-git clone https://github.com/<your-username>/Secure_Login_Webapp.git
+git clone https://github.com/Kavin27116/Secure_Login_Webapp.git
 cd Secure_Login_Webapp
 ```
 
@@ -321,32 +316,6 @@ Secure_Login_Webapp/
 
 ---
 
-## Screenshots
-
-> *(Screenshots to be added after UI implementation)*
-
-| Page | Description |
-|---|---|
-| Registration Page | Form with real-time password strength meter |
-| Login Page | Email + password with 2FA code field |
-| 2FA Setup | QR code display and verification |
-| Dashboard | Protected page shown after successful login |
-
----
-
-## Future Enhancements
-
-- OAuth 2.0 / Social login (Google, GitHub)
-- Email verification on registration
-- Password reset via secure email link
-- Admin dashboard for user management
-- Persistent login with Remember-Me tokens (secure, hashed)
-- WebAuthn / Passkey support (FIDO2)
-- Audit log for all authentication events
-- Docker containerization for easy deployment
-
----
-
 ## References
 
 1. OWASP Authentication Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
@@ -358,21 +327,3 @@ Secure_Login_Webapp/
 7. bcrypt — Password Hashing Library — https://pypi.org/project/bcrypt/
 
 ---
-
-## Author
-
-**[Your Name]** — Final Year Student, B.E. Computer Science and Engineering
-- GitHub: [@your-github-username](https://github.com/your-github-username)
-- Email: your.email@example.com
-
-> *This project was developed as part of the Final Year Academic Project requirement for the degree of Bachelor of Engineering in Computer Science and Engineering.*
-
----
-
-## License
-
-This project is developed for academic purposes. All rights reserved.
-
----
-
-*Last Updated: May 2026*
