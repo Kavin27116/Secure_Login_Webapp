@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Secure Login System{% endblock %}
+
+{% block content %}
+<div class="dash-layout">
+  
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="s-icon">🛡️</div>
+      <span>SecureApp</span>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <a href="{{ url_for('dashboard.index') }}" class="nav-item active">
+        <span class="ni">📊</span> Dashboard
+      </a>
+      {% if not current_user.is_2fa_enabled %}
+      <a href="{{ url_for('auth.setup_2fa') }}" class="nav-item">
+        <span class="ni">🔐</span> Setup 2FA
+      </a>
+      {% endif %}
+      <a href="{{ url_for('auth.logout') }}" class="nav-item">
+        <span class="ni">🚪</span> Sign Out
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-info">
+        <div class="user-avatar">{{ current_user.username[0]|upper }}</div>
+        <div>
+          <div class="user-name">{{ current_user.username }}</div>
+          <div class="user-email">{{ current_user.email }}</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="dash-main">
+    
+    <header class="dash-header">
+      <h2>Welcome back, {{ current_user.username }}</h2>
+      <p>Here is your security overview and recent activity.</p>
+    </header>
+
+    <!-- Stats -->
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-icon purple">👤</div>
+        <div>
+          <div class="stat-label">User Status</div>
+          <div class="stat-value">Active</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon cyan">🛡️</div>
+        <div>
+          <div class="stat-label">Account Security</div>
+          <div class="stat-value">
+            {% if current_user.is_2fa_enabled %} High {% else %} Standard {% endif %}
+          </div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon {% if current_user.is_2fa_enabled %}green{% else %}red{% endif %}">
+          {% if current_user.is_2fa_enabled %}✅{% else %}⚠️{% endif %}
+        </div>
+        <div>
+          <div class="stat-label">2FA Status</div>
+          <div class="stat-value">
+            {% if current_user.is_2fa_enabled %} Enabled {% else %} Disabled {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+      
+      <!-- Security Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="ph-icon">🔒</span>
+          <h3>Security Settings</h3>
+        </div>
+        <div class="panel-body">
+          <div class="security-items">
+            
+            <div class="security-item">
+              <div class="si-left">
+                <div class="si-dot ok"></div>
+                <div>
+                  <div class="si-label">Password</div>
+                  <div class="si-sub">Last changed at registration</div>
+                </div>
+              </div>
+              <span class="badge badge-success">OK</span>
+            </div>
+
+            <div class="security-item">
+              <div class="si-left">
+                <div class="si-dot {% if current_user.is_2fa_enabled %}ok{% else %}warn{% endif %}"></div>
+                <div>
+                  <div class="si-label">Two-Factor Authentication (2FA)</div>
+                  <div class="si-sub">Additional security via TOTP</div>
+                </div>
+              </div>
+              {% if current_user.is_2fa_enabled %}
+                <form method="POST" action="{{ url_for('auth.disable_2fa') }}" onsubmit="return confirm('Are you sure you want to disable 2FA? This will reduce your account security.');">
+                  <button type="submit" class="btn btn-danger btn-sm">Disable</button>
+                </form>
+              {% else %}
+                <a href="{{ url_for('auth.setup_2fa') }}" class="btn btn-primary btn-sm">Enable</a>
+              {% endif %}
+            </div>
+
+            <div class="security-item">
+              <div class="si-left">
+                <div class="si-dot ok"></div>
+                <div>
+                  <div class="si-label">Active Session</div>
+                  <div class="si-sub">You are currently signed in</div>
+                </div>
+              </div>
+              <a href="{{ url_for('auth.logout') }}" class="btn btn-ghost btn-sm">Sign Out</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="ph-icon">📜</span>
+          <h3>Recent Login Activity</h3>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date / Time</th>
+                <th>Status</th>
+                <th>IP Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for attempt in recent_attempts %}
+                <tr>
+                  <td>{{ attempt.timestamp.strftime('%Y-%m-%d %H:%M:%S UTC') }}</td>
+                  <td>
+                    {% if attempt.success %}
+                      <span class="badge badge-success">Success</span>
+                    {% else %}
+                      <span class="badge badge-danger">Failed</span>
+                    {% endif %}
+                  </td>
+                  <td style="font-family: monospace;">{{ attempt.ip_address }}</td>
+                </tr>
+              {% else %}
+                <tr>
+                  <td colspan="3" style="text-align: center;">No activity recorded yet.</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+{% endblock %}
